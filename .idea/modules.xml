@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/.idea/Spring-Security-master.iml" filepath="$PROJECT_DIR$/.idea/Spring-Security-master.iml" />
+      <module fileurl="file://$PROJECT_DIR$/.idea/Spring-Security.iml" filepath="$PROJECT_DIR$/.idea/Spring-Security.iml" />
     </modules>
   </component>
 </project>

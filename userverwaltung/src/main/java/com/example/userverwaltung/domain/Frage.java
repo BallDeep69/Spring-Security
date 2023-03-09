@@ -3,13 +3,14 @@ package com.example.userverwaltung.domain;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.validation.constraints.Max;
-import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.Hibernate;
 
 import java.time.LocalDate;
-import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Objects;
 
 @Entity
@@ -18,33 +19,31 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@NoArgsConstructor
 public class Frage {
     @Id
     @GeneratedValue
     private Long id;
 
     @Max(20)
+    @NotNull
     private String bezeichnung;
 
     @Max(200)
+    @NotNull
     private String fragetext;
 
-    @Min(1)
-    @Max(3)
-    @Setter(AccessLevel.NONE)
-    private int antwort;
-
-    @NonNull
+    @NotNull
     private LocalDate ablaufDatum;
 
-    public void setAntwort(int antwort) {
-        if (this.antwort == 0 && ablaufDatum.isAfter(LocalDate.now())) {
-            this.antwort = antwort;
-        } else {
-            throw new IllegalArgumentException("Frage kann nur einmal innerhalb der gueltigen Zeit beantwortet werden");
-        }
-    }
+    @OneToMany
+    private List<Antwort> antworten;
 
+    public Frage(String bezeichnung, String fragetext, LocalDate ablaufDatum) {
+        this.bezeichnung = bezeichnung;
+        this.fragetext = fragetext;
+        this.ablaufDatum = ablaufDatum;
+    }
 
     @Override
     public boolean equals(Object o) {

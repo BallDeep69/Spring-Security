@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<style>
+    table, th, td{
+        border:1px solid black;
+        border-collapse: collapse;
+    }
+</style>
+<body>
+<table>
+    <tr>
+        <th>Bezeichnung</th>
+        <th>Fragetext</th>
+        <th>Läuft ab am</th>
+    </tr>
+    <tr th:each="question: ${unanswered_questions}">
+        <td th:text="${question.bezeichnung}">
+        <td th:text="${question.fragetext}"></td>
+        <td th:text="${question.ablaufDatum}"></td>
+    </tr>
+</table>
+</body>
+</html>

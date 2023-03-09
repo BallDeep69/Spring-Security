@@ -8,6 +8,7 @@ import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.NotNull;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.Length;
 
 import java.time.LocalDate;
 import java.util.List;
@@ -15,7 +16,6 @@ import java.util.Objects;
 
 @Entity
 @AllArgsConstructor
-@RequiredArgsConstructor
 @Getter
 @Setter
 @ToString
@@ -25,11 +25,11 @@ public class Frage {
     @GeneratedValue
     private Long id;
 
-    @Max(20)
+    @Length(max = 20)
     @NotNull
     private String bezeichnung;
 
-    @Max(200)
+    @Length(max = 200)
     @NotNull
     private String fragetext;
 
@@ -37,6 +37,7 @@ public class Frage {
     private LocalDate ablaufDatum;
 
     @OneToMany
+    @ToString.Exclude
     private List<Antwort> antworten;
 
     public Frage(String bezeichnung, String fragetext, LocalDate ablaufDatum) {

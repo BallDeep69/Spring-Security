@@ -17,7 +17,7 @@ import java.util.Objects;
 @ToString
 @RequiredArgsConstructor
 @AllArgsConstructor
-public class User {
+public class UserEntity {
     @Id
     @Email
     private String mailAdresse;
@@ -36,8 +36,8 @@ public class User {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
-        User user = (User) o;
-        return mailAdresse != null && Objects.equals(mailAdresse, user.mailAdresse);
+        UserEntity userEntity = (UserEntity) o;
+        return mailAdresse != null && Objects.equals(mailAdresse, userEntity.mailAdresse);
     }
 
     @Override

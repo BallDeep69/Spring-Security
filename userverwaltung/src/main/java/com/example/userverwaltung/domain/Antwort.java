@@ -10,12 +10,11 @@ import java.time.LocalDate;
 @Data
 @Table(
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"frage", "beantwortetVon"})
+                @UniqueConstraint(columnNames = {"antwort_frage", "beantwortet_von"})
         }
 )
 @AllArgsConstructor
 @NoArgsConstructor
-@RequiredArgsConstructor
 public class Antwort {
     @Id
     @GeneratedValue
@@ -23,11 +22,13 @@ public class Antwort {
 
     @ManyToOne
     @NotNull
+    @JoinColumn(name="antwort_frage")
     private Frage frage;
 
     @ManyToOne
     @NotNull
-    private User beantwortetVon;
+    @JoinColumn(name="beantwortet_von")
+    private UserEntity beantwortetVon;
 
     @PastOrPresent
     @NotNull
@@ -43,7 +44,7 @@ public class Antwort {
     @NotNull
     private Integer antwort;
 
-    public Antwort(Frage frage, User beantwortetVon, LocalDate beantwortetAm, Integer antwort) {
+    public Antwort(Frage frage, UserEntity beantwortetVon, LocalDate beantwortetAm, Integer antwort) {
         this.frage = frage;
         this.beantwortetVon = beantwortetVon;
         this.beantwortetAm = beantwortetAm;

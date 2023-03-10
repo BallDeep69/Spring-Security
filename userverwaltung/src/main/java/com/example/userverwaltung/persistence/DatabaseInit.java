@@ -23,7 +23,7 @@ public record DatabaseInit (FrageRepository frageRepository, UserRepository user
                 new UserEntity("e.pils@htlstp.at", Typ.USER, bcryptencoder.encode("Bernhard"), "user"),
                 new UserEntity("m.hrazdira@htlstp.at", Typ.USER, bcryptencoder.encode("freddy_keine_show"), "user")
         );
-        userRepository.saveAll(users);
+        users = userRepository.saveAll(users);
         var fragen = List.of(
                 new Frage("freddys show","Macht Freddy heute Show?", LocalDate.of(2023,2,1)),
                 new Frage("SQL Verbrecher","Verdient der SQL Verbrecher lebenslange Haft?", LocalDate.of(2023,4,9)),
@@ -36,7 +36,7 @@ public record DatabaseInit (FrageRepository frageRepository, UserRepository user
                 new Frage("frankthetank","Der Elektrowizard hat mehr Drip als die ganze Abteilung zusammen", LocalDate.of(2023,4,9)),
                 new Frage("frankthetank2","Neuer Sommerskin für den Elektrowizard??", LocalDate.of(2023,4,9))
         );
-        frageRepository.saveAll(fragen);
+        fragen = frageRepository.saveAll(fragen);
         var antworten = List.of(
                 new Antwort(fragen.get(0), users.get(0), LocalDate.of(2023,1,1), 3),
                 new Antwort(fragen.get(0), users.get(1), LocalDate.of(2023,1,1), 2),

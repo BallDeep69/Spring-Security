@@ -1,20 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<testsuite name="services.XmlSerializerTest$Serializing" tests="12" skipped="1" failures="0" errors="0" timestamp="2023-03-08T08:42:13" hostname="DESKTOP-FOASM6G" time="0.068">
+<testsuite name="services.XmlSerializerTest$Serializing" tests="12" skipped="1" failures="0" errors="0" timestamp="2023-03-10T10:06:17" hostname="DESKTOP-2ANI1HB" time="0.097">
   <properties/>
-  <testcase name="ignores_fake_getters()" classname="services.XmlSerializerTest$Serializing" time="0.046"/>
-  <testcase name="special_xml_characters()" classname="services.XmlSerializerTest$Serializing" time="0.001"/>
-  <testcase name="complex_object()" classname="services.XmlSerializerTest$Serializing" time="0.002"/>
+  <testcase name="ignores_fake_getters()" classname="services.XmlSerializerTest$Serializing" time="0.071"/>
+  <testcase name="special_xml_characters()" classname="services.XmlSerializerTest$Serializing" time="0.002"/>
+  <testcase name="complex_object()" classname="services.XmlSerializerTest$Serializing" time="0.001"/>
   <testcase name="object_with_object_arrays()" classname="services.XmlSerializerTest$Serializing" time="0.002"/>
   <testcase name="object_with_collections()" classname="services.XmlSerializerTest$Serializing" time="0.003"/>
   <testcase name="object_with_strings()" classname="services.XmlSerializerTest$Serializing" time="0.001"/>
   <testcase name="ignores_null_fields()" classname="services.XmlSerializerTest$Serializing" time="0.0"/>
-  <testcase name="composite_objects()" classname="services.XmlSerializerTest$Serializing" time="0.001"/>
+  <testcase name="composite_objects()" classname="services.XmlSerializerTest$Serializing" time="0.002"/>
   <testcase name="object_with_wrappers()" classname="services.XmlSerializerTest$Serializing" time="0.001"/>
-  <testcase name="object_with_primitive_arrays()" classname="services.XmlSerializerTest$Serializing" time="0.0">
+  <testcase name="object_with_primitive_arrays()" classname="services.XmlSerializerTest$Serializing" time="0.001">
     <skipped/>
   </testcase>
   <testcase name="object_without_fields()" classname="services.XmlSerializerTest$Serializing" time="0.001"/>
-  <testcase name="object_with_primitive_fields()" classname="services.XmlSerializerTest$Serializing" time="0.001"/>
+  <testcase name="object_with_primitive_fields()" classname="services.XmlSerializerTest$Serializing" time="0.002"/>
   <system-out><![CDATA[]]></system-out>
   <system-err><![CDATA[]]></system-err>
 </testsuite>

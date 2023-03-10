@@ -1,18 +1,20 @@
 package com.example.userverwaltung.domain;
 
-import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.Id;
-import jakarta.persistence.OneToMany;
-import jakarta.validation.constraints.Max;
+import jakarta.persistence.*;
+import jakarta.validation.constraints.Future;
 import jakarta.validation.constraints.NotNull;
+import jakarta.websocket.OnError;
+import jakarta.websocket.OnMessage;
 import lombok.*;
+import org.aspectj.lang.annotation.DeclareError;
 import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.time.LocalDate;
-import java.util.List;
-import java.util.Objects;
+import java.util.*;
+import java.util.function.Function;
+import java.util.stream.Collectors;
 
 @Entity
 @AllArgsConstructor
@@ -22,23 +24,25 @@ import java.util.Objects;
 @NoArgsConstructor
 public class Frage {
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Length(max = 20)
-    @NotNull
+    @Length(max = 20, message = "zu lang")
+    @NotNull(message = "muss ausgewählt sein")
     private String bezeichnung;
 
-    @Length(max = 200)
-    @NotNull
+    @Length(max = 200, message = "zu lang")
+    @NotNull(message = "muss ausgewählt sein")
     private String fragetext;
 
-    @NotNull
+    @NotNull(message = "muss ausgewählt sein")
+    @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
     private LocalDate ablaufDatum;
 
-    @OneToMany
+    @OneToMany(mappedBy = "frage")
     @ToString.Exclude
     private List<Antwort> antworten;
+
 
     public Frage(String bezeichnung, String fragetext, LocalDate ablaufDatum) {
         this.bezeichnung = bezeichnung;

@@ -93,7 +93,7 @@ public class SecurityConfig {
                 .formLogin(config -> config
                         .loginPage("/login")
                         .permitAll()
-                        .defaultSuccessUrl("/greeting", true))
+                        .defaultSuccessUrl("/fragen", true))
                 .rememberMe();
         return http.build();
     }

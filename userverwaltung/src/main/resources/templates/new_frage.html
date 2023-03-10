@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Frage hinzufügen</title>
+</head>
+<body>
+<h1 >Frage hinzufügen haha</h1>
+<form action="/fragen/new_frage"
+      method="post"
+      th:object="${new_frage}">
+
+  <div>
+    <label th:for="*{bezeichnung}">Bezeichnung:</label>
+    <input type="text" th:field="*{bezeichnung}">
+    <span th:if="${#fields.hasErrors('bezeichnung')}"
+          th:errors="*{bezeichnung}" style="color: red"></span>
+  </div>
+
+  <div>
+    <label th:for="*{fragetext}">Fragetext:</label>
+    <input type="text" th:field="*{fragetext}">
+    <span th:if="${#fields.hasErrors('fragetext')}"
+          th:errors="*{fragetext}" style="color: red"></span>
+  </div>
+
+  <div>
+    <label th:for="*{ablaufDatum}">AblaufDatum:</label>
+    <input type="date" th:field="*{ablaufDatum}">
+    <span th:if="${#fields.hasErrors('ablaufDatum')}"
+          th:errors="*{ablaufDatum}" style="color: red"></span>
+  </div>
+  <input type="submit">
+</form>
+</body>
+</html>

@@ -5,29 +5,30 @@ import jakarta.validation.constraints.*;
 import lombok.*;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Data
 @Table(
         uniqueConstraints = {
-                @UniqueConstraint(columnNames = {"antwort_frage", "beantwortet_von"})
+                @UniqueConstraint(columnNames = {"frage_id", "beantwortet_von_mail_adresse"})
         }
 )
 @AllArgsConstructor
 @NoArgsConstructor
 public class Antwort {
+
     @Id
-    @GeneratedValue
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name="antwort_frage")
+    @JoinColumn(name="frage_id")
     private Frage frage;
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name="beantwortet_von")
     private UserEntity beantwortetVon;
 
     @PastOrPresent
@@ -54,5 +55,18 @@ public class Antwort {
     @AssertTrue
     private boolean isAnswerValid(){
         return beantwortetAm.isBefore(frage.getAblaufDatum());
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        Antwort antwort1 = (Antwort) o;
+        return Objects.equals(id, antwort1.id) && Objects.equals(frage, antwort1.frage) && Objects.equals(beantwortetVon, antwort1.beantwortetVon) && Objects.equals(beantwortetAm, antwort1.beantwortetAm) && Objects.equals(antwort, antwort1.antwort);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, frage, beantwortetVon, beantwortetAm, antwort);
     }
 }

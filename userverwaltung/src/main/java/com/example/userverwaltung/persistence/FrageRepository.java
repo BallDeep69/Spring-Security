@@ -21,4 +21,11 @@ public interface FrageRepository extends JpaRepository<Frage, Long> {
             ) and CURRENT_DATE < f.ablaufDatum
             """)
     List<Frage> getFragenForUser(UserEntity userEntity);
+
+    @Query("""
+            select count(a.id)
+            from Antwort a
+            where a.frage.id = :id and a.antwort = :vote
+            """)
+    Integer getNumberOfVotes(Long id, int vote);
 }

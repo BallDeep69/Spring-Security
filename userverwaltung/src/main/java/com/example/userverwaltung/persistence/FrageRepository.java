@@ -9,21 +9,19 @@ import org.springframework.data.jpa.repository.Query;
 import java.util.List;
 
 public interface FrageRepository extends JpaRepository<Frage, Long> {
-    @Query("select f.antworten from Frage f where f.id = :id")
-    List<Antwort> getAntwortenFromFrage(Long id);
     @Query("""
-            select f 
-            from Frage f 
+            select f
+            from Frage f
             where f not in (
-                select a.frage 
-                from Antwort a 
+                select a.frage
+                from Antwort a
                 where a.beantwortetVon = :userEntity
             ) and CURRENT_DATE < f.ablaufDatum
             """)
     List<Frage> getFragenForUser(UserEntity userEntity);
 
     @Query("""
-            select count(a.id)
+            select count(a)
             from Antwort a
             where a.frage.id = :id and a.antwort = :vote
             """)

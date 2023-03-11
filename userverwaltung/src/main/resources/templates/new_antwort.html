@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Frage beantworten</title>
+</head>
+<body>
+<h1 th:text="${frage.bezeichnung}"></h1>
+<p th:text="${frage.fragetext}"></p>
+<form method="post"
+      th:object="${new_antwort}">
+    <div>
+        <label>
+            <input type="radio" th:name="myRadioGroup" th:value=1 th:field="${new_antwort.antwort}"/>
+            Trifft völlig zu
+        </label>
+        <label>
+            <input type="radio" th:name="myRadioGroup" th:value=2 th:field="${new_antwort.antwort}"/>
+            Trifft teilweise zu
+        </label>
+        <label>
+            <input type="radio" th:name="myRadioGroup" th:value=3 th:field="${new_antwort.antwort}"/>
+            Trifft nicht zu
+        </label>
+    </div>
+  <input type="submit">
+</form>
+<a th:href="@{/fragen}">Zurück zu den Fragen</a>
+</body>
+</html>

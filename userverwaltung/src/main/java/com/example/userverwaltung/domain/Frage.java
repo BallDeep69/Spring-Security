@@ -24,7 +24,7 @@ import java.util.stream.Collectors;
 @NoArgsConstructor
 public class Frage {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @Length(max = 20, message = "zu lang")
@@ -38,10 +38,6 @@ public class Frage {
     @NotNull(message = "muss ausgewählt sein")
     @DateTimeFormat(iso= DateTimeFormat.ISO.DATE)
     private LocalDate ablaufDatum;
-
-    @OneToMany(mappedBy = "frage")
-    @ToString.Exclude
-    private List<Antwort> antworten;
 
 
     public Frage(String bezeichnung, String fragetext, LocalDate ablaufDatum) {

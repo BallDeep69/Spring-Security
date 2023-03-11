@@ -5,26 +5,27 @@
     <title>Title</title>
 </head>
 <style>
-    table, th, td{
-        border:1px solid black;
+    table, th, td {
+        border: 1px solid black;
         border-collapse: collapse;
     }
 </style>
 <body>
 <h1 th:text="${greeting}"></h1>
-<form th:action="@{/logout}" method="post">
-    <button type="submit" class="btn btn-primary">Logout</button>
 <table>
     <tr>
         <th>Bezeichnung</th>
-        <th>Fragetext</th>
         <th>Läuft ab am</th>
     </tr>
     <tr th:each="question: ${unanswered_questions}">
-        <td th:text="${question.bezeichnung}">
-        <td th:text="${question.fragetext}"></td>
+        <td>
+            <a th:href="@{/fragen/{id}(id=${question.id})}" th:text="${question.bezeichnung}"></a>
+        </td>
         <td th:text="${question.ablaufDatum}"></td>
     </tr>
 </table>
+<form th:action="@{/logout}" method="post">
+    <button type="submit" class="btn btn-primary">Logout</button>
+</form>
 </body>
 </html>

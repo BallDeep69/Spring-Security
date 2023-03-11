@@ -3,28 +3,31 @@ package com.example.userverwaltung.domain;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
+import org.hibernate.Hibernate;
 
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Entity
-@Data
+@Getter
+@Setter
+@ToString
 @Table(
         uniqueConstraints = {
                 @UniqueConstraint(columnNames = {"frage_id", "beantwortet_von_mail_adresse"})
         }
 )
-@AllArgsConstructor
 @NoArgsConstructor
+@AllArgsConstructor
 public class Antwort {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     private Long id;
 
     @ManyToOne
     @NotNull
-    @JoinColumn(name="frage_id")
+ //   @JoinColumn(name="frage_id")
     private Frage frage;
 
     @ManyToOne
@@ -52,21 +55,21 @@ public class Antwort {
         this.antwort = antwort;
     }
 
-    @AssertTrue
-    private boolean isAnswerValid(){
-        return beantwortetAm.isBefore(frage.getAblaufDatum());
-    }
+    //    @AssertTrue
+//    private boolean isAnswerValid(){
+//        return beantwortetAm.isBefore(frage.getAblaufDatum());
+//    }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (o == null || getClass() != o.getClass()) return false;
-        Antwort antwort1 = (Antwort) o;
-        return Objects.equals(id, antwort1.id) && Objects.equals(frage, antwort1.frage) && Objects.equals(beantwortetVon, antwort1.beantwortetVon) && Objects.equals(beantwortetAm, antwort1.beantwortetAm) && Objects.equals(antwort, antwort1.antwort);
+        if (o == null || Hibernate.getClass(this) != Hibernate.getClass(o)) return false;
+        Antwort antwort = (Antwort) o;
+        return id != null && Objects.equals(id, antwort.id);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, frage, beantwortetVon, beantwortetAm, antwort);
+        return getClass().hashCode();
     }
 }

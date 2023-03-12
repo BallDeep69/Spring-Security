@@ -61,7 +61,7 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
 
     private String displayAdminOverview(Principal principal, Model model) {
         System.out.println("Alle Fragen: ");
-        for(var antwort : antwortRepository.findAll()){
+        for (var antwort : antwortRepository.findAll()) {
             System.out.println(antwort);
         }
         model.addAttribute("all_questions", frageRepository.findAll());
@@ -69,23 +69,23 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
         return "overview_admin";
     }
 
-    private Map<Long, List<Integer>> getSummaryMap(){
-        var summary = new HashMap<Long, List<Integer>>();
+    private Map<Long, Map<Integer, Integer>> getSummaryMap() {
+        var summary = new HashMap<Long, Map<Integer, Integer>>();
         var fragen = frageRepository.findAll();
-        for(var frage : fragen){
-            var listOfAnswers = new ArrayList<Integer>();
-            for(int i = 1; i <= 3; i++){
-                Integer number = frageRepository.getNumberOfVotes(frage.getId(), i);
-                listOfAnswers.add(number == null ? 0 : number);
+        for (var frage : fragen) {
+            var mapForQuestion = new HashMap<Integer, Integer>();
+            for (int i = 1; i <= 3; i++) {
+                Integer numberOfVotes = frageRepository.getNumberOfVotes(frage.getId(), i);
+                mapForQuestion.put(i, numberOfVotes == null ? 0 : numberOfVotes);
             }
-            summary.put(frage.getId(), listOfAnswers);
+            summary.put(frage.getId(), mapForQuestion);
         }
         return summary;
     }
 
     @GetMapping("/fragen/new_frage")
-    public String getNewQuestionPage(Model model){
-        if(!model.containsAttribute("new_frage"))
+    public String getNewQuestionPage(Model model) {
+        if (!model.containsAttribute("new_frage"))
             model.addAttribute("new_frage", new Frage());
         return "new_frage";
     }
@@ -99,7 +99,7 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
     }
 
     @GetMapping("/fragen/{id}")
-    public String getQuestionAnswerPage(@PathVariable Long id, Model model){
+    public String getQuestionAnswerPage(@PathVariable Long id, Model model) {
         var selectedFrage = frageRepository.findById(id).orElseThrow();
         model.addAttribute("frage", selectedFrage);
         model.addAttribute("new_antwort", new Antwort());
@@ -107,7 +107,7 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
     }
 
     @PostMapping("/fragen/{id}")
-    public String handleAnsweredQuestion(@PathVariable Long id, Principal principal, @ModelAttribute("new_antwort") Antwort new_antwort, Model model){
+    public String handleAnsweredQuestion(@PathVariable Long id, Principal principal, @ModelAttribute("new_antwort") Antwort new_antwort, Model model) {
         new_antwort.setId(null);
         var selectedFrage = frageRepository.findById(id).orElseThrow();
         var user = userRepository.findById(principal.getName()).orElseThrow();

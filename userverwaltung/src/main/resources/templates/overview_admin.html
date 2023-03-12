@@ -26,9 +26,9 @@
     <tr th:each="question: ${all_questions}">
         <td th:text="${question.bezeichnung}">
         <td th:text="${question.ablaufDatum}"></td>
-        <td th:text="${summary_map[question.id][0]}"></td>
         <td th:text="${summary_map[question.id][1]}"></td>
         <td th:text="${summary_map[question.id][2]}"></td>
+        <td th:text="${summary_map[question.id][3]}"></td>
     </tr>
 </table>
 <form th:action="@{/fragen/new_frage}" method="post">

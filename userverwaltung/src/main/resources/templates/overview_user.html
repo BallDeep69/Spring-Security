@@ -17,6 +17,9 @@
         <th>Bezeichnung</th>
         <th>Läuft ab am</th>
     </tr>
+    <tr th:if="${unanswered_questions.empty}">
+        <td colspan="2">Alle Fragen beantwortet!</td>
+    </tr>
     <tr th:each="question: ${unanswered_questions}">
         <td>
             <a th:href="@{/fragen/{id}(id=${question.id})}" th:text="${question.bezeichnung}"></a>

@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.*;
 import org.hibernate.Hibernate;
+import org.hibernate.validator.constraints.Range;
 
 import java.time.LocalDate;
 import java.util.Objects;
@@ -27,7 +28,7 @@ public class Antwort {
 
     @ManyToOne
     @NotNull
- //   @JoinColumn(name="frage_id")
+    //   @JoinColumn(name="frage_id")
     private Frage frage;
 
     @ManyToOne
@@ -43,8 +44,7 @@ public class Antwort {
      * trifft teilweise zu: 2
      * trifft nicht zu: 3
      */
-    @Min(1)
-    @Max(3)
+    @Range(min = 1, max = 3)
     @NotNull
     private Integer antwort;
 
@@ -55,10 +55,10 @@ public class Antwort {
         this.antwort = antwort;
     }
 
-    //    @AssertTrue
-//    private boolean isAnswerValid(){
-//        return beantwortetAm.isBefore(frage.getAblaufDatum());
-//    }
+    @AssertTrue
+    private boolean isAnswerValid(){
+        return beantwortetAm.isBefore(frage.getAblaufDatum());
+    }
 
     @Override
     public boolean equals(Object o) {

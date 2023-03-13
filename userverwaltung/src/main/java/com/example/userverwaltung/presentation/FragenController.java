@@ -7,19 +7,18 @@ import com.example.userverwaltung.persistence.AntwortRepository;
 import com.example.userverwaltung.persistence.FrageRepository;
 import com.example.userverwaltung.persistence.UserRepository;
 import jakarta.validation.Valid;
-import org.aspectj.weaver.patterns.TypePatternQuestions;
-import org.springframework.cglib.core.Local;
-import org.springframework.security.core.userdetails.UsernameNotFoundException;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.web.client.HttpStatusCodeException;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 @Controller
@@ -41,25 +40,26 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
 
     @GetMapping("/fragen")
     public String displayOverview(Principal principal, Model model) {
-        var username = principal == null ? "User" : principal.getName();
+        if (principal == null) throw new IllegalArgumentException("User nicht gueltig");
+        var username = principal.getName();
         model.addAttribute("greeting", "Hello " + username);
         var user = userRepository.findById(username).orElseThrow();
-        if (user.getTyp() == Typ.USER) {
-            return displayUserOverview(principal, model);
+        if (user.getTyp() == Typ.ADMIN) {
+            return displayAdminOverview(model);
         } else {
-            return displayAdminOverview(principal, model);
+            return displayUserOverview(username, model);
         }
     }
 
-    private String displayUserOverview(Principal principal, Model model) {
+    private String displayUserOverview(String username, Model model) {
         model.addAttribute(
                 "unanswered_questions",
-                frageRepository.getFragenForUser(userRepository.findById(principal.getName()).orElseThrow())
+                frageRepository.getFragenForUser(userRepository.findById(username).orElseThrow())
         );
         return "overview_user";
     }
 
-    private String displayAdminOverview(Principal principal, Model model) {
+    private String displayAdminOverview(Model model) {
         System.out.println("Alle Fragen: ");
         for (var antwort : antwortRepository.findAll()) {
             System.out.println(antwort);
@@ -83,17 +83,19 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
         return summary;
     }
 
-    @GetMapping("/fragen/new_frage")
-    public String getNewQuestionPage(Model model) {
+    @GetMapping("/fragen/neue_frage")
+    public String getNewQuestionPage(Principal principal, Model model) {
+        validateUserForRole(principal, Typ.ADMIN);
         if (!model.containsAttribute("new_frage"))
             model.addAttribute("new_frage", new Frage());
         return "new_frage";
     }
 
-    @PostMapping("/fragen/new_frage")
-    public String handleNewQuestion(Model model, @Valid @ModelAttribute("new_frage") Frage frage, BindingResult bindingResult) {
+    @PostMapping("/fragen/neue_frage")
+    public String handleNewQuestion(Model model, Principal principal, @Valid @ModelAttribute("new_frage") Frage frage, BindingResult bindingResult) {
+        validateUserForRole(principal, Typ.ADMIN);
         if (bindingResult.hasErrors())
-            return getNewQuestionPage(model);
+            return getNewQuestionPage(principal, model);
         frageRepository.save(frage);
         return "redirect:/fragen";    //kein .html file, sondern eine route
     }
@@ -119,6 +121,22 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
         var saved = antwortRepository.save(new_antwort);
         System.out.println(saved);
         return "redirect:/fragen";
+    }
+
+    private void validateUserForRole(Principal principal, Typ typ){
+        var user = userRepository.findById(principal.getName());
+        if(user.isEmpty() || user.get().getTyp() != typ)
+            throw new HttpStatusCodeException(HttpStatus.NOT_FOUND) {
+                @Override
+                public HttpStatusCode getStatusCode() {
+                    return super.getStatusCode();
+                }
+            };
+    }
+
+    @GetMapping("/error")
+    public String redirectToErrorPage() {
+        return "error";
     }
 
 }

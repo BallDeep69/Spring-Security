@@ -3,18 +3,15 @@ package com.example.userverwaltung.presentation;
 import com.example.userverwaltung.domain.Antwort;
 import com.example.userverwaltung.domain.Frage;
 import com.example.userverwaltung.domain.Typ;
+import com.example.userverwaltung.domain.exception.UserNotValidException;
 import com.example.userverwaltung.persistence.AntwortRepository;
 import com.example.userverwaltung.persistence.FrageRepository;
 import com.example.userverwaltung.persistence.UserRepository;
 import jakarta.validation.Valid;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.client.HttpStatusCodeException;
-import org.springframework.web.server.ResponseStatusException;
 
 import java.security.Principal;
 import java.time.LocalDate;
@@ -123,15 +120,10 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
         return "redirect:/fragen";
     }
 
-    private void validateUserForRole(Principal principal, Typ typ){
+    private void validateUserForRole(Principal principal, Typ typ) {
         var user = userRepository.findById(principal.getName());
-        if(user.isEmpty() || user.get().getTyp() != typ)
-            throw new HttpStatusCodeException(HttpStatus.NOT_FOUND) {
-                @Override
-                public HttpStatusCode getStatusCode() {
-                    return super.getStatusCode();
-                }
-            };
+        if (user.isEmpty() || user.get().getTyp() != typ)
+            throw new UserNotValidException();
     }
 
     @GetMapping("/error")

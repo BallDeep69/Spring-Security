@@ -47,42 +47,6 @@ public class SecurityConfig {
         return custom(http);
     }
 
-
-    private SecurityFilterChain standard(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth.anyRequest().authenticated())
-                .formLogin();
-        return http.build();
-    }
-
-    private SecurityFilterChain free(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth -> auth.anyRequest().permitAll())
-                .formLogin().disable();
-        return http.build();
-    }
-
-    private SecurityFilterChain usual(HttpSecurity http) throws Exception {
-        http
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers(GET, "/", "/home").permitAll()
-                                .requestMatchers("/admin/**").hasRole("admin")
-                                .anyRequest().authenticated())
-                .formLogin();
-        return http.build();
-    }
-
-    private SecurityFilterChain basicAuth(HttpSecurity http) throws Exception {
-        http
-                .csrf().disable()
-                .authorizeHttpRequests(auth ->
-                        auth.requestMatchers("/", "/home").permitAll()
-                                .requestMatchers("/admin/**").hasRole("admin")
-                                .anyRequest().authenticated())
-                .httpBasic();
-        return http.build();
-    }
-
     private SecurityFilterChain custom(HttpSecurity http) throws Exception {
         http
                 .csrf().disable()

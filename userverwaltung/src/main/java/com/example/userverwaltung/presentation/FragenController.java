@@ -97,7 +97,7 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
         if (bindingResult.hasErrors())
             return getNewQuestionPage(principal, model);
         frageRepository.save(frage);
-        return "redirect:/fragen";    //kein .html file, sondern eine route
+        return "redirect:/fragen";
     }
 
     @GetMapping("/fragen/{id}")

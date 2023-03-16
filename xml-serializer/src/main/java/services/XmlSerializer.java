@@ -16,16 +16,16 @@ public class XmlSerializer {
 
         StringBuilder serializedString = new StringBuilder();
 
-        if (object instanceof Collection<?> arrayObject) {
-            arrayObject.forEach(i ->
+        if (object instanceof Collection<?> collectionObject) {
+            collectionObject.forEach(i ->
                     serializedString
                             .append(wrapInXMLStuff("value", serialize(i))));
         } else if (object instanceof Object[] arrayObject) {
             Arrays.stream(arrayObject).forEach(i ->
                     serializedString
                             .append(wrapInXMLStuff("value", serialize(i))));
-        } else if (object instanceof Map<?, ?> map) {
-            map.forEach((key, value) ->
+        } else if (object instanceof Map<?, ?> mapObject) {
+            mapObject.forEach((key, value) ->
                     serializedString
                             .append(wrapInXMLStuff("key", serialize(key)))
                             .append(wrapInXMLStuff("value", serialize(value))));
@@ -34,8 +34,8 @@ public class XmlSerializer {
             var fields = object.getClass().getDeclaredFields();
             serializedString.append("<").append(object.getClass().getSimpleName()).append(">");
             for (Field field : fields) {
-                var fieldValue = getValueOfField(field, object);
-                fieldValue.ifPresent(o -> serializedString.append(wrapInXMLStuff(field.getName(), serialize(o))));
+                getValueOfField(field, object)
+                        .ifPresent(o -> serializedString.append(wrapInXMLStuff(field.getName(), serialize(o))));
             }
             serializedString.append("</").append(object.getClass().getSimpleName()).append(">");
 
@@ -82,16 +82,16 @@ public class XmlSerializer {
         return string;
     }
 
-    public static boolean isWrapper(Class<?> clazz) {
-        return clazz.equals(Boolean.class) ||
-                clazz.equals(Character.class) ||
-                clazz.equals(Byte.class) ||
-                clazz.equals(Short.class) ||
-                clazz.equals(Integer.class) ||
-                clazz.equals(Long.class) ||
-                clazz.equals(Float.class) ||
-                clazz.equals(Double.class) ||
-                clazz.equals(Void.class);
+    public static boolean isWrapper(Class<?> classToCheck) {
+        return classToCheck.equals(Boolean.class) ||
+                classToCheck.equals(Character.class) ||
+                classToCheck.equals(Byte.class) ||
+                classToCheck.equals(Short.class) ||
+                classToCheck.equals(Integer.class) ||
+                classToCheck.equals(Long.class) ||
+                classToCheck.equals(Float.class) ||
+                classToCheck.equals(Double.class) ||
+                classToCheck.equals(Void.class);
     }
 }
 

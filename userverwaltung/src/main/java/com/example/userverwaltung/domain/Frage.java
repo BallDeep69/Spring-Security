@@ -2,6 +2,7 @@ package com.example.userverwaltung.domain;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Future;
+import jakarta.validation.constraints.NotEmpty;
 import jakarta.validation.constraints.NotNull;
 import jakarta.websocket.OnError;
 import jakarta.websocket.OnMessage;
@@ -28,11 +29,11 @@ public class Frage {
     private Long id;
 
     @Length(max = 20, message = "zu lang")
-    @NotNull(message = "muss ausgewählt sein")
+    @NotEmpty(message = "muss ausgewählt sein")
     private String bezeichnung;
 
     @Length(max = 200, message = "zu lang")
-    @NotNull(message = "muss ausgewählt sein")
+    @NotEmpty(message = "muss ausgewählt sein")
     private String fragetext;
 
     @NotNull(message = "muss ausgewählt sein")

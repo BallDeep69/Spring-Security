@@ -34,7 +34,8 @@ public record DatabaseInit (FrageRepository frageRepository, UserRepository user
                         "trifft nicht zu" für 3 Schritte
                         """, LocalDate.of(2023,4,9)),
                 new Frage("frankthetank","Der Elektrowizard hat mehr Drip als die ganze Abteilung zusammen", LocalDate.of(2023,4,9)),
-                new Frage("frankthetank2","Neuer Sommerskin für den Elektrowizard??", LocalDate.of(2023,4,9))
+                new Frage("frankthetank2","Neuer Sommerskin für den Elektrowizard??", LocalDate.of(2023,4,9)),
+                new Frage("FrankElectroWizard", "ELLECCCTRIIIIFYYYYYY", LocalDate.of(2023,4,9))
         );
         fragen = frageRepository.saveAll(fragen);
         var antworten = List.of(

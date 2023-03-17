@@ -21,4 +21,7 @@ public interface FrageRepository extends JpaRepository<Frage, Long> {
 
     @Query("SELECT a.frage, a.antwort, COUNT(a) AS vote_count FROM Antwort a GROUP BY a.frage, a.antwort")
     List<Object[]> getNumberOfVotes();
+
+    @Query("select case when count(a) > 0 then true else false end from Antwort a where a.frage = :frage and a.beantwortetVon = :user")
+    boolean isAlreadyAnswered(Frage frage, UserEntity user);
 }

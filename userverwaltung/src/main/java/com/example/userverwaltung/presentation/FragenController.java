@@ -82,8 +82,10 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
     }
 
     @GetMapping("/fragen/{id}")
-    public String getQuestionAnswerPage(@PathVariable Long id, Model model) {
+    public String getQuestionAnswerPage(@PathVariable Long id, Principal principal, Model model) {
         var selectedFrage = frageRepository.findById(id).orElseThrow();
+        var user = userRepository.findById(principal.getName()).orElseThrow();
+        if (frageRepository.isAlreadyAnswered(selectedFrage, user)) throw new UserNotValidException();
         model.addAttribute("frage", selectedFrage);
         model.addAttribute("new_antwort", new Antwort());
         return "new_antwort";
@@ -95,7 +97,7 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
         var selectedFrage = frageRepository.findById(id).orElseThrow();
         var user = userRepository.findById(principal.getName()).orElseThrow();
         if (new_antwort.getAntwort() == null)
-            return getQuestionAnswerPage(id, model);
+            return getQuestionAnswerPage(id, principal, model);
         new_antwort.setFrage(selectedFrage);
         new_antwort.setBeantwortetVon(user);
         new_antwort.setBeantwortetAm(LocalDate.now());

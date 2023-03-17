@@ -5,6 +5,7 @@ import com.example.userverwaltung.domain.Frage;
 import com.example.userverwaltung.domain.Typ;
 import com.example.userverwaltung.domain.exception.UserNotValidException;
 import com.example.userverwaltung.persistence.AntwortRepository;
+import com.example.userverwaltung.persistence.AntwortService;
 import com.example.userverwaltung.persistence.FrageRepository;
 import com.example.userverwaltung.persistence.UserRepository;
 import jakarta.validation.Valid;
@@ -15,13 +16,11 @@ import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 import java.time.LocalDate;
-import java.util.HashMap;
-import java.util.Map;
 
 @Controller
 @RequestMapping
 public record FragenController(FrageRepository frageRepository, AntwortRepository antwortRepository,
-                               UserRepository userRepository) {
+                               UserRepository userRepository, AntwortService antwortService) {
 
     @GetMapping("login")
     public String displayLogin() {
@@ -61,23 +60,8 @@ public record FragenController(FrageRepository frageRepository, AntwortRepositor
         for (var antwort : antwortRepository.findAll()) {
             System.out.println(antwort);
         }
-        model.addAttribute("all_questions", frageRepository.findAll());
-        model.addAttribute("summary_map", getSummaryMap());
+        model.addAttribute("vote_summary", antwortService.getVoteSummary().entrySet());
         return "overview_admin";
-    }
-
-    private Map<Long, Map<Integer, Integer>> getSummaryMap() {
-        var summary = new HashMap<Long, Map<Integer, Integer>>();
-        var fragen = frageRepository.findAll();
-        for (var frage : fragen) {
-            var mapForQuestion = new HashMap<Integer, Integer>();
-            for (int i = 1; i <= 3; i++) {
-                Integer numberOfVotes = frageRepository.getNumberOfVotes(frage.getId(), i);
-                mapForQuestion.put(i, numberOfVotes == null ? 0 : numberOfVotes);
-            }
-            summary.put(frage.getId(), mapForQuestion);
-        }
-        return summary;
     }
 
     @GetMapping("/fragen/neue_frage")

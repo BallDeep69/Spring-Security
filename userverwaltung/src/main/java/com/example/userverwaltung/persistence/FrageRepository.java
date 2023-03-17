@@ -1,6 +1,5 @@
 package com.example.userverwaltung.persistence;
 
-import com.example.userverwaltung.domain.Antwort;
 import com.example.userverwaltung.domain.Frage;
 import com.example.userverwaltung.domain.UserEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,10 +19,6 @@ public interface FrageRepository extends JpaRepository<Frage, Long> {
             """)
     List<Frage> getFragenForUser(UserEntity userEntity);
 
-    @Query("""
-            select count(a)
-            from Antwort a
-            where a.frage.id = :id and a.antwort = :vote
-            """)
-    Integer getNumberOfVotes(Long id, int vote);
+    @Query("SELECT a.frage, a.antwort, COUNT(a) AS vote_count FROM Antwort a GROUP BY a.frage, a.antwort")
+    List<Object[]> getNumberOfVotes();
 }

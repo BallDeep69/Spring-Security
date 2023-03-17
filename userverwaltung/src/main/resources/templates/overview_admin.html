@@ -23,12 +23,12 @@
         <th>Beantwortet mit "trifft teilweise zu"</th>
         <th>Beantwortet mit "trifft nicht zu"</th>
     </tr>
-    <tr th:each="question: ${all_questions}">
-        <td th:text="${question.bezeichnung}">
-        <td th:text="${question.ablaufDatum}"></td>
-        <td th:text="${summary_map[question.id][1]}"></td>
-        <td th:text="${summary_map[question.id][2]}"></td>
-        <td th:text="${summary_map[question.id][3]}"></td>
+    <tr th:each="entry: ${vote_summary}">
+        <td th:text="${entry.key.bezeichnung}">
+        <td th:text="${entry.key.ablaufDatum}"></td>
+        <td th:text="${entry.value[1]}"></td>
+        <td th:text="${entry.value[2]}"></td>
+        <td th:text="${entry.value[3]}"></td>
     </tr>
 </table>
 <form th:action="@{/fragen/neue_frage}" method="get">
